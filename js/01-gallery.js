@@ -57,14 +57,20 @@ galleryContainer.addEventListener('click', event => {
   }
   const largeImageSrc = event.target.dataset.source;
   const instance = basicLightbox.create(`
-    <img src="${largeImageSrc}" width="800" height="600">
-  `);
+    <img src="${largeImageSrc}" width="800" height="600">`,
+    {
+  onShow: (instance) => {
+        window.addEventListener('keydown', onEscKeyPress);
+      },
+      onClose: (instance) => {
+        window.removeEventListener('keydown', onEscKeyPress);
+      }
+    }
+  );
   instance.show();
-  window.addEventListener('keydown', onEscKeyPress);
   function onEscKeyPress(event) {
     if (event.code === 'Escape') {
       instance.close();
-      window.removeEventListener('keydown', onEscKeyPress);
     }
   }
 });
